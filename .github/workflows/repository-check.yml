@@ -1,0 +1,18 @@
+name: Repository checks
+on:
+  push:
+  pull_request:
+
+jobs:
+  structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify scaffold
+        shell: bash
+        run: |
+          set -euo pipefail
+          for path in README.md .gitignore docs/architecture/README.md docs/jtl-api/README.md plugins/README.md integrations/README.md templates/README.md scripts/README.md tests/README.md; do
+            test -f "$path" || { echo "Missing: $path"; exit 1; }
+          done
+          echo 'Scaffold OK'
